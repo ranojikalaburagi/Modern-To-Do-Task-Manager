@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern To-Do Task Manager</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.container{
+    width:420px;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(12px);
+    border-radius:20px;
+    padding:25px;
+    color:white;
+    box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.inputBox{
+    display:flex;
+    gap:10px;
+}
+
+input{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    font-size:16px;
+}
+
+button{
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    background:#00d084;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
+}
+
+button:hover{
+    background:#00b06f;
+}
+
+ul{
+    margin-top:20px;
+    list-style:none;
+}
+
+li{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(255,255,255,.2);
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:12px;
+}
+
+.task{
+    flex:1;
+    cursor:pointer;
+}
+
+.completed{
+    text-decoration:line-through;
+    color:#dcdcdc;
+}
+
+.delete{
+    background:#ff4d4d;
+    padding:8px 12px;
+}
+
+.delete:hover{
+    background:#d63031;
+}
+
+.footer{
+    margin-top:15px;
+    text-align:center;
+    font-size:15px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>📝 To-Do Manager</h1>
+
+<div class="inputBox">
+<input type="text" id="taskInput" placeholder="Enter a new task...">
+<button onclick="addTask()">Add</button>
+</div>
+
+<ul id="taskList"></ul>
+
+<div class="footer">
+Total Tasks:
+<span id="count">0</span>
+</div>
+
+</div>
+
+<script>
+
+let taskInput=document.getElementById("taskInput");
+let taskList=document.getElementById("taskList");
+let count=document.getElementById("count");
+
+function updateCount(){
+    count.innerHTML=taskList.children.length;
+}
+
+function addTask(){
+
+    if(taskInput.value.trim()==""){
+        alert("Please enter a task.");
+        return;
+    }
+
+    let li=document.createElement("li");
+
+    let span=document.createElement("span");
+    span.className="task";
+    span.innerHTML=taskInput.value;
+
+    span.onclick=function(){
+        span.classList.toggle("completed");
+    }
+
+    let del=document.createElement("button");
+    del.innerHTML="Delete";
+    del.className="delete";
+
+    del.onclick=function(){
+        li.remove();
+        updateCount();
+    }
+
+    li.appendChild(span);
+    li.appendChild(del);
+
+    taskList.appendChild(li);
+
+    taskInput.value="";
+    updateCount();
+
+}
+
+taskInput.addEventListener("keypress",function(e){
+    if(e.key==="Enter"){
+        addTask();
+    }
+});
+
+</script>
+
+</body>
+</html>
